@@ -1,14 +1,31 @@
+<!-- 
+Meteor parses all of the HTML files in your app folder and identifies three top-level tags: <head>, <body>, and <template>.
+Everything inside any <head> tags is added to the head section of the HTML sent to the client, and everything inside <body> tags is added to the body section, just like in a regular HTML file.
+-->
 <head>
-  <title>simple-todos</title>
+  <title>Todo List</title>
 </head>
-
+ 
 <body>
-  <h1>Welcome to Meteor!</h1>
-
-  {{> hello}}
+  <div class="container">
+    <header>
+      <h1>Todo List</h1>
+    </header>
+ 
+    <ul>
+<!--
+we defined a helper called tasks on Template.body that returns an array. Inside the body tag of the HTML, we can use {{#each tasks}} to iterate over the array and insert a task template for each value. Inside the #each block, we can display the text property of each array item using {{text}}.
+-->
+      {{#each tasks}}
+        {{> task}}
+      {{/each}}
+    </ul>
+  </div>
 </body>
-
-<template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
+ 
+<!--
+Everything inside <template> tags is compiled into Meteor templates, which can be included inside HTML with {{> templateName}} or referenced in your JavaScript with Template.templateName.
+-->
+<template name="task">
+  <li>{{text}}</li>
 </template>
