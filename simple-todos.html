@@ -18,7 +18,10 @@ Everything inside any <head> tags is added to the head section of the HTML sent 
  
     <ul>
 <!--
-we defined a helper called tasks on Template.body that returns an array. Inside the body tag of the HTML, we can use {{#each tasks}} to iterate over the array and insert a task template for each value. Inside the #each block, we can display the text property of each array item using {{text}}.
+we defined a helper called tasks on Template.body that returns an array. Inside 
+the body tag of the HTML, we can use {{#each tasks}} to iterate over the array 
+and insert a task template for each value. Inside the #each block, we can display 
+the text property of each array item using {{text}}.
 -->
       {{#each tasks}}
         {{> task}}
@@ -28,8 +31,17 @@ we defined a helper called tasks on Template.body that returns an array. Inside 
 </body>
  
 <!--
-Everything inside <template> tags is compiled into Meteor templates, which can be included inside HTML with {{> templateName}} or referenced in your JavaScript with Template.templateName.
+Everything inside <template> tags is compiled into Meteor templates, which can 
+be included inside HTML with {{> templateName}} or referenced in your JavaScript 
+with Template.templateName.
 -->
 <template name="task">
-  <li>{{text}}</li>
+  <!-- Checked off tasks will have a line through them. This is enabled by the following snippet -->
+  <li class="{{#if checked}}checked{{/if}}">
+    <button class="delete">&times;</button>
+     
+    <input type="checkbox" checked="{{checked}}" class="toggle-checked" />
+   
+    <span class="text">{{text}}</span>
+  </li>
 </template>

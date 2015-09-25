@@ -44,6 +44,27 @@ if (Meteor.isClient) {
       event.target.text.value = "";
     }
   });
+
+  Template.task.events({
+    "click .toggle-checked": function () {
+      // Set the checked property to the opposite of its current value.
+      // 'this' refers to an individual task object. In a collection, every inserted 
+      // document has a unique _id field that can be used to refer to that specific 
+      // document.
+      //
+      // Two arguments ... The first is a selector that identifies a subset of 
+      // the collection, and the second is an update parameter that specifies 
+      // what should be done to the matched objects - use $set to toggle the checked 
+      // field.
+      Tasks.update(this._id, {
+        $set: {checked: ! this.checked}
+      });
+    },
+
+    "click .delete": function () {
+      Tasks.remove(this._id);
+    }
+  });
 }
 
 if (Meteor.isServer) {
