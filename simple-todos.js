@@ -8,14 +8,27 @@ if (Meteor.isClient) {
   // This code only runs on the client
   Template.body.helpers({
     tasks: function () {
-      // Show newest tasks at the top
-      return Tasks.find({}, {sort: {createdAt: -1}});
-      // This commented out statement returns list in order stored in array
-      // return Tasks.find({});
+      if (Session.get("hideCompleted")) {
+        // If hide completed is checked, filter tasks
+        return Tasks.find({checked: {$ne: true}}, {sort: {createdAt: -1}});
+      } else {
+        // Otherwise, return all of the tasks
+        return Tasks.find({}, {sort: {createdAt: -1}});
+      }
+    },
+    // helper to make sure the checkbox represents the state of our Session 
+    // variable.
+    hideCompleted: function () {
+      return Session.get("hideCompleted");
+    },
+    // display a count of the tasks that haven't been checked off
+    incompleteCount: function () {
+      return Tasks.find({checked: {$ne: true}}).count();
     }
   });
  
   Template.body.events({
+
     // Add to listen to the submit event on the form.
     // We are listening to the submit event on any element that matches 
     // the CSS selector .new-task.
@@ -42,7 +55,15 @@ if (Meteor.isClient) {
 
       // Clear form to prepare for another new 
       event.target.text.value = "";
+    },
+    // Liste to change event on element "hide-completed"
+    "change .hide-completed input": function (event) {
+      // Session is a convenient place to store temporary UI state, and can be 
+      // used in helpers just like a collection. It is not synced with the 
+      // server like collections are
+      Session.set("hideCompleted", event.target.checked);
     }
+
   });
 
   Template.task.events({
